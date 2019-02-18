@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-18T07:11:05.492Z",
+	"__export_date": "2019-02-18T07:42:09.193Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
@@ -52,13 +52,13 @@
 				{
 					"id": "pair_1be840b754034b708fbb301cf9a35a9a",
 					"name": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzM3MTcsIm5iZiI6MTU1MDQ3MzcxNywianRpIjoiMzNjNjFjZjYtNTE3Ny00ZTc1LWE2NjctNDMwYmY5M2M2NzUxIiwiZXhwIjoxNTUwNDc0NjE3LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.CErUB7SZ2CjX_M44k_cXrOKY0FqoBQJlYa0s5CsOheI"
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzU2ODIsIm5iZiI6MTU1MDQ3NTY4MiwianRpIjoiMDNhNmI3YjktZGQzOS00YmI3LWJkZjEtZTNjMDAzOTMyZWU5IiwiZXhwIjoxNTgyMDExNjgyLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.qJeJiTRGe7_qOMWUteBa-mbCuyuNvULwtu93TVtXYMY"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1547207471393,
 			"method": "POST",
-			"modified": 1550473734074,
+			"modified": 1550475696523,
 			"name": "Register exchnage",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -121,13 +121,13 @@
 				{
 					"id": "pair_1be840b754034b708fbb301cf9a35a9a",
 					"name": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzM3MTcsIm5iZiI6MTU1MDQ3MzcxNywianRpIjoiMzNjNjFjZjYtNTE3Ny00ZTc1LWE2NjctNDMwYmY5M2M2NzUxIiwiZXhwIjoxNTUwNDc0NjE3LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.CErUB7SZ2CjX_M44k_cXrOKY0FqoBQJlYa0s5CsOheI"
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzU2ODIsIm5iZiI6MTU1MDQ3NTY4MiwianRpIjoiMDNhNmI3YjktZGQzOS00YmI3LWJkZjEtZTNjMDAzOTMyZWU5IiwiZXhwIjoxNTgyMDExNjgyLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.qJeJiTRGe7_qOMWUteBa-mbCuyuNvULwtu93TVtXYMY"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1546405064372.75,
 			"method": "POST",
-			"modified": 1550473727997,
+			"modified": 1550475710124,
 			"name": "Get exchanges",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -154,17 +154,12 @@
 					"id": "pair_f6a49174d3a447d792767b6b149ef5a0",
 					"name": "Content-Type",
 					"value": "application/json"
-				},
-				{
-					"id": "pair_1be840b754034b708fbb301cf9a35a9a",
-					"name": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzA0NzUsIm5iZiI6MTU1MDQ3MDQ3NSwianRpIjoiYWFlNmMwM2YtODZkZC00ZjFhLTg0ZDQtNjNjYmQ3NjEzNGNjIiwiZXhwIjoxNTUwNDcxMzc1LCJpZGVudGl0eSI6MiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.xxn1Hcis0UnFf3jmlVv6WwSNs4IOJrE2AWgvXfYP3tg"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1546806267882.875,
 			"method": "POST",
-			"modified": 1550473700317,
+			"modified": 1550475703862,
 			"name": "Register user",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",

@@ -1,7 +1,11 @@
+from datetime import timedelta
+from functools import wraps
+
 from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, \
+    jwt_required, get_jwt_identity, verify_jwt_in_request
 
 from application import app, db
 from database_manager import prepare_database
@@ -9,6 +13,33 @@ from models import User, Exchange
 
 
 prepare_database()
+
+
+def auth_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            verify_jwt_in_request()
+        except:
+            return 'Auth required', 403
+        return fn(*args, **kwargs)
+    return wrapper
+
+
+def get_user_id(email, password):
+    user = User.query.filter_by(email=email, active=True).first()
+    if not user:
+        return None
+    if not check_password_hash(user.password, password):
+        return None
+    return user.id
+
+
+def user_exists(user_id):
+    user = User.query.filter_by(id=user_id, active=True).first()
+    if not user:
+        return False
+    return True
 
 
 @app.route('/register_user', methods=['POST'])
@@ -29,21 +60,19 @@ def register_user():
 def login():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return "User not exists", 404
-    if not check_password_hash(user.password, password):
-        return "Incorrect password", 400
-    ret = {'access_token': create_access_token(identity=user.id, fresh=True)}
+    user_id = get_user_id(email, password)
+    if not user_id:
+        return "User not exists or not active", 404
+    expires = timedelta(days=365)
+    ret = {'access_token': create_access_token(identity=user_id, fresh=True, expires_delta=expires)}
     return jsonify(ret), 200
 
 
 @app.route('/get_exchange_keys', methods=['POST'])
-@jwt_required
+@auth_required
 def get_exchange_key():
     user_id = get_jwt_identity()
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
+    if not user_exists(user_id):
         return 'User not found.', 404
     exchanges = Exchange.query.filter_by(user_id=user_id).all()
     result = []
@@ -58,7 +87,7 @@ def get_exchange_key():
 
 
 @app.route('/register_exchange', methods=['POST'])
-@jwt_required
+@auth_required
 def register_exchange():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
