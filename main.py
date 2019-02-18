@@ -1,6 +1,8 @@
-from flask import Flask
+from application import app
+from database_manager import prepare_database
 
-app = Flask(__name__)
+
+prepare_database()
 
 
 @app.route('/')
