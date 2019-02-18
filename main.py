@@ -10,6 +10,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, \
 from application import app, db
 from database_manager import prepare_database
 from models import User, Exchange
+from responses import make_response
 
 
 prepare_database()
@@ -21,7 +22,7 @@ def auth_required(fn):
         try:
             verify_jwt_in_request()
         except:
-            return 'Auth required', 403
+            return make_response({'error': 'Auth required'}, 403)
         return fn(*args, **kwargs)
     return wrapper
 
@@ -51,9 +52,9 @@ def register_user():
         user.password = generate_password_hash(user_info['password'])
         db.session.add(user)
         db.session.commit()
-        return 'Registered', 200
+        return make_response({'status': 'ok'}, 200)
     except Exception as ex:
-        return 'Register error:{}'.format(ex), 500
+        return make_response({'error': '{}'.format(ex)}, 500)
 
 
 @app.route('/login', methods=['POST'])
@@ -62,18 +63,18 @@ def login():
     password = request.json.get('password', None)
     user_id = get_user_id(email, password)
     if not user_id:
-        return "User not exists or not active", 404
+        return make_response({'error': 'User not exists or not active'}, 404)
     expires = timedelta(days=365)
     ret = {'access_token': create_access_token(identity=user_id, fresh=True, expires_delta=expires)}
-    return jsonify(ret), 200
+    return make_response(ret, 200)
 
 
-@app.route('/get_exchange_keys', methods=['POST'])
+@app.route('/get_exchange_keys', methods=['GET'])
 @auth_required
 def get_exchange_key():
     user_id = get_jwt_identity()
     if not user_exists(user_id):
-        return 'User not found.', 404
+        return make_response({'error': 'User not found.'}, 404)
     exchanges = Exchange.query.filter_by(user_id=user_id).all()
     result = []
     for exchange in exchanges:
@@ -83,7 +84,7 @@ def get_exchange_key():
                 'api_key': exchange.api_key
             }
         )
-    return jsonify(result), 200
+    return make_response(result, 200)
 
 
 @app.route('/register_exchange', methods=['POST'])
@@ -92,7 +93,7 @@ def register_exchange():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
     if not user:
-        return 'User not found.', 404
+        return make_response({'error': 'User not exists or not active'}, 404)
     exchange = Exchange()
     exchange.user_id = user_id
     exchange.exchange_id = request.json.get('exchange_id', None)
@@ -102,8 +103,8 @@ def register_exchange():
         db.session.commit()
     except IntegrityError as ex:
         if ex.orig.args[0] == 1062:
-            return 'Exchange already exists for this user'.format(ex), 500
-        return '{}'.format(ex), 500
+            return make_response({'error': 'Exchange already exists for this user'}, 500)
+        return make_response({'error': '{}'.format(ex)}, 500)
     return 'OK', 200
 
 
