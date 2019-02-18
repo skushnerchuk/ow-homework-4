@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-18T07:42:09.193Z",
+	"__export_date": "2019-02-18T08:16:12.599Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
@@ -39,7 +39,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"exchange_id\": 1,\n\t\"api_key\": \"1234567890\"\n}"
+				"text": "{\n\t\"exchange_id\": 2,\n\t\"api_key\": \"0987654321\"\n}"
 			},
 			"created": 1547207471393,
 			"description": "",
@@ -58,7 +58,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1547207471393,
 			"method": "POST",
-			"modified": 1550475696523,
+			"modified": 1550475798102,
 			"name": "Register exchnage",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -108,7 +108,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"exchange_id\": 1,\n\t\"api_key\": \"1234567890\"\n}"
+				"text": ""
 			},
 			"created": 1550470525773,
 			"description": "",
@@ -126,8 +126,8 @@
 			],
 			"isPrivate": false,
 			"metaSortKey": -1546405064372.75,
-			"method": "POST",
-			"modified": 1550475710124,
+			"method": "GET",
+			"modified": 1550477751689,
 			"name": "Get exchanges",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",

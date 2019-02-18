@@ -1,11 +1,10 @@
 from datetime import timedelta
 from functools import wraps
 
-from flask import request, jsonify
-from sqlalchemy.exc import IntegrityError
+from flask import request
+from sqlalchemy.exc import IntegrityError, OperationalError
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token, \
-    jwt_required, get_jwt_identity, verify_jwt_in_request
+from flask_jwt_extended import create_access_token, get_jwt_identity, verify_jwt_in_request
 
 from application import app, db
 from database_manager import prepare_database
@@ -98,10 +97,12 @@ def register_exchange():
     exchange.user_id = user_id
     exchange.exchange_id = request.json.get('exchange_id', None)
     exchange.api_key = request.json.get('api_key', None)
+    if not exchange.exchange_id or not exchange.api_key:
+        return make_response({'error': 'Incorrect request'}, 400)
     try:
         db.session.add(exchange)
         db.session.commit()
-    except IntegrityError as ex:
+    except (IntegrityError, OperationalError) as ex:
         if ex.orig.args[0] == 1062:
             return make_response({'error': 'Exchange already exists for this user'}, 500)
         return make_response({'error': '{}'.format(ex)}, 500)
