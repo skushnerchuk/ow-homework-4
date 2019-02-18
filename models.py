@@ -16,19 +16,11 @@ class User(db.Model):
 class Exchange(db.Model):
 
     __tablename__ = 'exchanges'
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'exchange_id', name='exchange_unique'),
+    )
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    exchange_id = db.Column(db.Integer, nullable=False)
+    exchange_id = db.Column(db.Integer, nullable=False, unique=False)
     api_key = db.Column(db.String(255), nullable=False)
-
-
-class Token(db.Model):
-
-    __tablename__ = 'tokens'
-
-    def __init__(self):
-        pass
-
-    token_id = db.Column(db.String(50), primary_key=True)
-    status = db.Column(db.SmallInteger)
