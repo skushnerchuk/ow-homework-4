@@ -22,7 +22,10 @@ def prepare_database():
 @app.route('/upgrade_database', methods=['GET'])
 def upgrade_database():
     try:
-        upgrade()
+        with app.app_context():
+            migrate()
+            upgrade()
         return 'Upgrade OK', 200
     except Exception as ex:
         return 'Upgrade error:{}'.format(ex), 500
+

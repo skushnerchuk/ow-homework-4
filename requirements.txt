@@ -3,3 +3,5 @@ flask-sqlalchemy
 flask_migrate
 gunicorn
 requests
+flask_jwt
+flask_jwt_extended
