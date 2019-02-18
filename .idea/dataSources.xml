@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="airtradex-protect" uuid="f8109886-ae0c-4f0c-bc6c-82b272fa2734">
+    <data-source source="LOCAL" name="@127.0.0.1" uuid="9d0d7e21-e3ef-485e-aa87-e5a478eef84a">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://172.17.0.2:3306</jdbc-url>
+      <jdbc-url>jdbc:mariadb://127.0.0.1:3306</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

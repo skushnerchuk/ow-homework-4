@@ -4,17 +4,10 @@ services:
   database:
     image: mariadb
     restart: always
+    container_name: airtradex_protect_database
     environment:
       MYSQL_ROOT_PASSWORD: 12345
     volumes:
-      - airtradex:/var/lib/mysql/data
+      - /home/sergey/data:/var/lib/mysql
     ports:
-      - "3306:3306"
-    networks:
-      - airtradex
-
-volumes:
-  airtradex:
-
-networks:
-  airtradex:
+      - "127.0.0.1:3306:3306"

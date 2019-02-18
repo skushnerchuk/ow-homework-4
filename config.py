@@ -2,11 +2,11 @@
 
 
 def get_mysql_url():
-    return 'mysql://root:12345@172.24.0.2/airtradex_protect'
+    return 'mysql://root:12345@127.0.0.1/airtradex_protect'
 
 
 def get_root_mysql_url():
-    return 'mysql://root:12345@172.24.0.2'
+    return 'mysql://root:12345@127.0.0.1'
 
 
 SQLALCHEMY_DATABASE_URI = get_mysql_url()
