@@ -15,7 +15,7 @@ services:
     command: --init-file /data/application/init.sql
 
   protector:
-    image: airtradex
+    image: airtradex_protect
     restart: always
     ports:
       - 8000:8000

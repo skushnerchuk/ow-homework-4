@@ -19,6 +19,7 @@ class Exchange(db.Model):
     __table_args__ = (db.UniqueConstraint('user_id', 'exchange_id', name='exchange_unique'),)
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
+                        nullable=False)
     exchange_id = db.Column(db.Integer, nullable=False, unique=False)
     api_key = db.Column(db.String(255), nullable=False)
