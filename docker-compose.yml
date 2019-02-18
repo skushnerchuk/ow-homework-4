@@ -8,6 +8,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 12345
     volumes:
+      - ./init.sql:/data/application/init.sql
       - /home/sergey/data:/var/lib/mysql
     ports:
-      - "127.0.0.1:3306:3306"
+      - 3306:3306
+    command: --init-file /data/application/init.sql
+
+  protector:
+    image: airtradex
+    restart: always
+    ports:
+      - "127.0.0.1:8000:8000"
+    links:
+      - database

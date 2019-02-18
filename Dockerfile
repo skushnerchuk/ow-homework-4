@@ -2,7 +2,9 @@ FROM python:3.7-alpine
 RUN ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 RUN echo "http://mirror.leaseweb.com/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk update && apk upgrade
-RUN apk add --no-cache gcc libc-dev linux-headers bash python3-dev libgcc libstdc++ musl geos-dev libxml2-dev libxslt-dev
+RUN apk add --no-cache gcc libc-dev linux-headers bash \
+    python3-dev libgcc libstdc++ musl geos-dev libxml2-dev libxslt-dev \
+    mariadb-dev libffi libffi-dev gmp-dev mpfr-dev bash jq curl
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
