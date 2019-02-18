@@ -23,7 +23,7 @@ def prepare_database():
 def upgrade_database():
     try:
         with app.app_context():
-            migrate()
+            #migrate()
             upgrade()
         return 'Upgrade OK', 200
     except Exception as ex:
