@@ -1,0 +1,12 @@
+version: "3.6"
+
+services:
+  protector-database:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+
+  protector:
+    image: airtradex-protect
+    restart: always
