@@ -7,5 +7,5 @@ from flask import Response
 def make_response(body, status_code):
     response = Response(json.dumps(body, ensure_ascii=False), status=status_code,
                         mimetype='application/json')
-    response.headers['server'] = 'AirTradex v1.0'
+    response.headers['Server'] = 'AirTradex v1.0'
     return response

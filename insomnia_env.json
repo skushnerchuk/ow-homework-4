@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-18T08:16:12.599Z",
+	"__export_date": "2019-02-19T10:20:00.952Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
@@ -52,13 +52,13 @@
 				{
 					"id": "pair_1be840b754034b708fbb301cf9a35a9a",
 					"name": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzU2ODIsIm5iZiI6MTU1MDQ3NTY4MiwianRpIjoiMDNhNmI3YjktZGQzOS00YmI3LWJkZjEtZTNjMDAzOTMyZWU5IiwiZXhwIjoxNTgyMDExNjgyLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.qJeJiTRGe7_qOMWUteBa-mbCuyuNvULwtu93TVtXYMY"
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA1NzE0NzQsIm5iZiI6MTU1MDU3MTQ3NCwianRpIjoiYjNjY2I1NDctOGU2OC00YWJmLWI0ZmYtZjk5NjVmZDk3OGNhIiwiZXhwIjoxNTgyMTA3NDc0LCJpZGVudGl0eSI6MiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.faMNHjcF0XcDp2_YhE1jwObcV__RGIqZTyc5vzbUaWc"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1547207471393,
 			"method": "POST",
-			"modified": 1550475798102,
+			"modified": 1550571521052,
 			"name": "Register exchnage",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -68,7 +68,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "127.0.0.1:5000/register_exchange",
+			"url": "https://exchanges.airtradex.com/register_exchange",
 			"_type": "request"
 		},
 		{
@@ -76,7 +76,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test_password\"\n}"
+				"text": "{\n\t\"email\": \"test2@test.com\",\n\t\"password\": \"test_password2\"\n}"
 			},
 			"created": 1550470434440,
 			"description": "",
@@ -90,7 +90,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1545602657352.5,
 			"method": "POST",
-			"modified": 1550470662607,
+			"modified": 1550571487037,
 			"name": "Login",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -100,7 +100,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "127.0.0.1:5000/login",
+			"url": "https://exchanges.airtradex.com/login",
 			"_type": "request"
 		},
 		{
@@ -121,13 +121,13 @@
 				{
 					"id": "pair_1be840b754034b708fbb301cf9a35a9a",
 					"name": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA0NzU2ODIsIm5iZiI6MTU1MDQ3NTY4MiwianRpIjoiMDNhNmI3YjktZGQzOS00YmI3LWJkZjEtZTNjMDAzOTMyZWU5IiwiZXhwIjoxNTgyMDExNjgyLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.qJeJiTRGe7_qOMWUteBa-mbCuyuNvULwtu93TVtXYMY"
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA1NzE0NzQsIm5iZiI6MTU1MDU3MTQ3NCwianRpIjoiYjNjY2I1NDctOGU2OC00YWJmLWI0ZmYtZjk5NjVmZDk3OGNhIiwiZXhwIjoxNTgyMTA3NDc0LCJpZGVudGl0eSI6MiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.faMNHjcF0XcDp2_YhE1jwObcV__RGIqZTyc5vzbUaWc"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1546405064372.75,
 			"method": "GET",
-			"modified": 1550477751689,
+			"modified": 1550571498590,
 			"name": "Get exchanges",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -137,7 +137,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "127.0.0.1:5000/get_exchange_keys",
+			"url": "https://exchanges.airtradex.com/get_exchange_keys",
 			"_type": "request"
 		},
 		{
@@ -145,7 +145,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test_password\"\n}"
+				"text": "{\n\t\"email\": \"test2@test.com\",\n\t\"password\": \"test_password2\",\n\t\"token\": \"qjdfhqwldjf83902ydpawjedhf984\"\n}"
 			},
 			"created": 1550473670609,
 			"description": "",
@@ -159,7 +159,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1546806267882.875,
 			"method": "POST",
-			"modified": 1550475703862,
+			"modified": 1550571431275,
 			"name": "Register user",
 			"parameters": [],
 			"parentId": "wrk_5de532ee2d78442e8f442a282a86caab",
@@ -169,7 +169,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "127.0.0.1:5000/register_user",
+			"url": "https://exchanges.airtradex.com/register_user",
 			"_type": "request"
 		}
 	]

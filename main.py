@@ -46,13 +46,18 @@ def user_exists(user_id):
 def register_user():
     try:
         user_info = request.json
+        register_token = user_info.get('token', None)
+        if register_token != 'qjdfhqwldjf83902ydpawjedhf984':
+            return make_response({'status': 'ok'}, 200)
         user = User()
-        user.email = user_info['email']
-        user.password = generate_password_hash(user_info['password'])
+        user.email = user_info.get('email', None)
+        user.password = generate_password_hash(user_info.get('password', None))
         db.session.add(user)
         db.session.commit()
         return make_response({'status': 'ok'}, 200)
-    except Exception as ex:
+    except (IntegrityError, OperationalError) as ex:
+        if ex.orig.args[0] == 1062:
+            return make_response({'error': 'Email already registered'}, 500)
         return make_response({'error': '{}'.format(ex)}, 500)
 
 
@@ -106,7 +111,7 @@ def register_exchange():
         if ex.orig.args[0] == 1062:
             return make_response({'error': 'Exchange already exists for this user'}, 500)
         return make_response({'error': '{}'.format(ex)}, 500)
-    return 'OK', 200
+    return make_response({'status': 'ok'}, 200)
 
 
 if __name__ == '__main__':
