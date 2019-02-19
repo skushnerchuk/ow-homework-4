@@ -121,5 +121,22 @@ def register_exchange():
     return make_response({'status': 'ok'}, 200)
 
 
+@app.route('/delete_exchange', methods=['POST'])
+@auth_required
+def delete_exchange():
+    exchange_id = request.json.get('exchange_id', None)
+    if not exchange_id:
+        return make_response({'error': 'Incorrect request'}, 400)
+    try:
+        user_id = get_jwt_identity()
+        Exchange.query.filter(and_(Exchange.user_id == user_id, Exchange.exchange_id == exchange_id)).delete()
+        db.session.commit()
+    except (IntegrityError, OperationalError) as ex:
+        if ex.orig.args[0] == 1062:
+            return make_response({'error': 'Exchange delete error'}, 500)
+        return make_response({'error': '{}'.format(ex)}, 500)
+    return make_response({'status': 'ok'}, 200)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
