@@ -15,8 +15,7 @@ services:
 
 
   protector:
-    #image: registry.sk-developer.ru:5043/airtradex_protect
-    image: airtradex_protect_local
+    image: registry.sk-developer.ru:5043/airtradex_protect
     restart: always
     ports:
       - 7890:8000
