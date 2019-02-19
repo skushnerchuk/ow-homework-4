@@ -2,4 +2,4 @@
 
 docker-compose down
 docker build -t airtradex_protect_local .
-docker-compose up -d
+docker-compose -f local-compose.yml up -d

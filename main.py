@@ -2,6 +2,7 @@ from datetime import timedelta
 from functools import wraps
 
 from flask import request
+from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError, OperationalError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, verify_jwt_in_request
@@ -47,7 +48,7 @@ def register_user():
     try:
         user_info = request.json
         register_token = user_info.get('token', None)
-        if register_token != app.config['register_token']:
+        if register_token != 'qjdfhqwldjf83902ydpawjedhf984':
             return make_response({'status': 'ok'}, 200)
         user = User()
         user.email = user_info.get('email', None)
@@ -94,14 +95,20 @@ def get_exchange_key():
 @app.route('/register_exchange', methods=['POST'])
 @auth_required
 def register_exchange():
+    exchange_id = request.json.get('exchange_id', None)
+    api_key = request.json.get('api_key', None)
+    if not exchange_id or not api_key:
+        return make_response({'error': 'Incorrect request'}, 400)
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
     if not user:
         return make_response({'error': 'User not exists or not active'}, 404)
-    exchange = Exchange()
+    exchange = Exchange.query.filter(and_(Exchange.user_id == user_id, Exchange.exchange_id == exchange_id)).first()
+    if not exchange:
+        exchange = Exchange()
     exchange.user_id = user_id
-    exchange.exchange_id = request.json.get('exchange_id', None)
-    exchange.api_key = request.json.get('api_key', None)
+    exchange.exchange_id = exchange_id
+    exchange.api_key = api_key
     if not exchange.exchange_id or not exchange.api_key:
         return make_response({'error': 'Incorrect request'}, 400)
     try:

@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  database:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+    volumes:
+      - ./init.sql:/data/application/init.sql
+      - /home/sergey/data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    command: --init-file /data/application/init.sql
+
+
+  protector:
+    image: airtradex_protect_local
+    restart: always
+    ports:
+      - 7890:8000
+    links:
+      - database
+    environment:
+      DB_HOST: "database"
+      DB_PASSWORD: 12345
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    links:
+      - database:db
+    ports:
+      - 8765:80
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+    depends_on:
+      - database
