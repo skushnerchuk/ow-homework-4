@@ -47,7 +47,7 @@ def register_user():
     try:
         user_info = request.json
         register_token = user_info.get('token', None)
-        if register_token != 'qjdfhqwldjf83902ydpawjedhf984':
+        if register_token != app.config['register_token']:
             return make_response({'status': 'ok'}, 200)
         user = User()
         user.email = user_info.get('email', None)
