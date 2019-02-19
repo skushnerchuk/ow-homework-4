@@ -85,7 +85,7 @@ def get_exchange_key():
     for exchange in exchanges:
         result.append(
             {
-                'id': exchange.id,
+                'exchange_id': exchange.exchange_id,
                 'api_key': exchange.api_key
             }
         )
