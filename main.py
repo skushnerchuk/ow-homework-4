@@ -115,8 +115,6 @@ def register_exchange():
         db.session.add(exchange)
         db.session.commit()
     except (IntegrityError, OperationalError) as ex:
-        if ex.orig.args[0] == 1062:
-            return make_response({'error': 'Exchange already exists for this user'}, 500)
         return make_response({'error': '{}'.format(ex)}, 500)
     return make_response({'status': 'ok'}, 200)
 
