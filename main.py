@@ -1,140 +1,94 @@
-from datetime import timedelta
-from functools import wraps
+from flask import render_template, request, session, redirect
 
-from flask import request
-from sqlalchemy import and_
-from sqlalchemy.exc import IntegrityError, OperationalError
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, get_jwt_identity, verify_jwt_in_request
+from app import app, db
+from models import Category, Product
+from admin.blueprint import admin
 
-from application import app, db
-from database_manager import prepare_database
-from models import User, Exchange
-from responses import make_response
+db.create_all()
+app.register_blueprint(admin, url_prefix='/admin')
 
 
-prepare_database()
+def add_product_to_session(product_id):
+    """
+    Добавление продукта в сессию. Используется для реализации корзины
+    и создания заказа без регистрации пользователя
+    """
+    if 'cart' not in session:
+        session['cart'] = {}
+    if product_id in session['cart']:
+        session['cart'][product_id] += 1
+    else:
+        session['cart'][product_id] = 1
+    session.modified = True
 
 
-def auth_required(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        try:
-            verify_jwt_in_request()
-        except:
-            return make_response({'error': 'Auth required'}, 403)
-        return fn(*args, **kwargs)
-    return wrapper
+@app.route('/', methods=['GET'])
+def index():
+    """Индексная страница. На ней показываем продукты всех категорий"""
+    categories = Category.query.all()
+    products = Product.query.all()
+    return render_template('index.html', categories=categories, products=products)
 
 
-def get_user_id(email, password):
-    user = User.query.filter_by(email=email, active=True).first()
-    if not user:
-        return None
-    if not check_password_hash(user.password, password):
-        return None
-    return user.id
+@app.route('/categories/<category_id>', methods=['GET'])
+def category(category_id):
+    """Показ продуктов по категориям"""
+    categories = Category.query.all()
+    products = Product.query.filter(Product.category == category_id).all()
+    return render_template('index.html', categories=categories, products=products)
 
 
-def user_exists(user_id):
-    user = User.query.filter_by(id=user_id, active=True).first()
-    if not user:
-        return False
-    return True
+@app.route('/product/<product_id>', methods=['GET', 'POST'])
+def product(product_id):
+    """Показ деталей по продукту + добавление его в корзину"""
+    categories = Category.query.all()
+    if request.method == 'POST':
+        form = request.form
+        add_product_to_session(form['id'])
+        return redirect('/', 302)
+
+    product_info = Product.query.filter(Product.id == product_id).first()
+    if not product_info:
+        return redirect('/', 302)
+    return render_template('product.html', categories=categories, product=product_info)
 
 
-@app.route('/register_user', methods=['POST'])
-def register_user():
-    try:
-        user_info = request.json
-        register_token = user_info.get('token', None)
-        if register_token != 'qjdfhqwldjf83902ydpawjedhf984':
-            return make_response({'status': 'ok'}, 200)
-        user = User()
-        user.email = user_info.get('email', None)
-        user.password = generate_password_hash(user_info.get('password', None))
-        db.session.add(user)
-        db.session.commit()
-        return make_response({'status': 'ok'}, 200)
-    except (IntegrityError, OperationalError) as ex:
-        if ex.orig.args[0] == 1062:
-            return make_response({'error': 'Email already registered'}, 500)
-        return make_response({'error': '{}'.format(ex)}, 500)
+def process_cart_requests():
+    if 'reset' in request.form:
+        # Сброс всей сессии
+        session.clear()
+        return redirect('/', 302)
+
+    if 'delete' in request.form and request.form['id'] in session['cart']:
+        # Удаление указанного продукта из корзины
+        del session['cart'][str(request.form['id'])]
+        session.modified = True
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
-    user_id = get_user_id(email, password)
-    if not user_id:
-        return make_response({'error': 'User not exists or not active'}, 404)
-    expires = timedelta(days=365)
-    ret = {'access_token': create_access_token(identity=user_id, fresh=True, expires_delta=expires)}
-    return make_response(ret, 200)
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    """Корзина заказа"""
+    if 'cart' not in session:
+        return render_template('cart.html', carst='Cart is empty')
 
+    if request.method == 'POST':
+        process_cart_requests()
 
-@app.route('/get_exchange_keys', methods=['GET'])
-@auth_required
-def get_exchange_key():
-    user_id = get_jwt_identity()
-    if not user_exists(user_id):
-        return make_response({'error': 'User not found.'}, 404)
-    exchanges = Exchange.query.filter_by(user_id=user_id).all()
-    result = []
-    for exchange in exchanges:
-        result.append(
-            {
-                'exchange_id': exchange.exchange_id,
-                'api_key': exchange.api_key
-            }
-        )
-    return make_response(result, 200)
+    cart_items = []
+    total_amount = 0
+    # Формируем данные для таблицы заказа
+    for item in session['cart']:
+        product = Product.query.filter(Product.id == item).first()
+        total_amount += product.price * session['cart'][item]
+        cart_items.append({
+            'name': product.name,
+            'count': session['cart'][item],
+            'price': product.price,
+            'id': product.id
+        })
 
-
-@app.route('/register_exchange', methods=['POST'])
-@auth_required
-def register_exchange():
-    exchange_id = request.json.get('exchange_id', None)
-    api_key = request.json.get('api_key', None)
-    if not exchange_id or not api_key:
-        return make_response({'error': 'Incorrect request'}, 400)
-    user_id = get_jwt_identity()
-    user = User.query.filter_by(id=user_id).first()
-    if not user:
-        return make_response({'error': 'User not exists or not active'}, 404)
-    exchange = Exchange.query.filter(and_(Exchange.user_id == user_id, Exchange.exchange_id == exchange_id)).first()
-    if not exchange:
-        exchange = Exchange()
-    exchange.user_id = user_id
-    exchange.exchange_id = exchange_id
-    exchange.api_key = api_key
-    if not exchange.exchange_id or not exchange.api_key:
-        return make_response({'error': 'Incorrect request'}, 400)
-    try:
-        db.session.add(exchange)
-        db.session.commit()
-    except (IntegrityError, OperationalError) as ex:
-        return make_response({'error': '{}'.format(ex)}, 500)
-    return make_response({'status': 'ok'}, 200)
-
-
-@app.route('/delete_exchange', methods=['POST'])
-@auth_required
-def delete_exchange():
-    exchange_id = request.json.get('exchange_id', None)
-    if not exchange_id:
-        return make_response({'error': 'Incorrect request'}, 400)
-    try:
-        user_id = get_jwt_identity()
-        Exchange.query.filter(and_(Exchange.user_id == user_id, Exchange.exchange_id == exchange_id)).delete()
-        db.session.commit()
-    except (IntegrityError, OperationalError) as ex:
-        if ex.orig.args[0] == 1062:
-            return make_response({'error': 'Exchange delete error'}, 500)
-        return make_response({'error': '{}'.format(ex)}, 500)
-    return make_response({'status': 'ok'}, 200)
+    return render_template('cart.html', cart=cart_items, total=total_amount)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')

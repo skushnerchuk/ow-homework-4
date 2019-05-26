@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cart
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h4>
+
+            {% if not total %}
+                <br><br>
+                Cart is empty
+            {% else %}
+                <br><br>Order:<br><br>
+                <div class="row">
+                    <div class="col-sm">
+                        Name
+                    </div>
+                    <div class="col-sm">
+                        Count
+                    </div>
+                    <div class="col-sm">
+                        Price
+                    </div>
+                    <div class="col-sm">
+                    </div>
+
+
+                </div>
+                </h4>
+
+                {% for item in cart %}
+                    <div class="row">
+                        <div class="col-sm">
+                            {{ item.name }}
+                        </div>
+                        <div class="col-sm">
+                            {{ item.count }}
+                        </div>
+                        <div class="col-sm">
+                            {{ item.price }}
+                        </div>
+                        <div class="col-sm">
+                            <form method="POST" role="form">
+                                <input id="id" name="id" type="hidden" value="{{ item.id }}">
+                                <button type="submit" name="delete" class="btn btn-danger">X</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+                <br><br>Total: $ {{ total }}<br><br>
+                <form method="POST" role="form">
+                    <button type="submit" name="reset" class="btn btn-danger">Reset</button>
+                    <button type="submit" name="pay" class="btn btn-danger">Create order</button>
+                </form>
+            {% endif %}
+
+    </div>
+
+{% endblock %}

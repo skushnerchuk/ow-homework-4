@@ -1,11 +1,13 @@
-# -*- coding: utf-8 -*-
-
 from os import environ as env
 
-db_host = env.get('DB_HOST', '127.0.0.1')
-db_password = env.get('DB_PASSWORD', '12345')
-register_token = env.get('REGISTER_TOKEN', 'qjdfhqwldjf83902ydpawjedhf984')
 
-SQLALCHEMY_DATABASE_URI = f'mysql://root:{db_password}@{db_host}/airtradex_protect'
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-JWT_SECRET_KEY = '1234567890'
+class Config:
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = '!"*%*:%;lksadoufhlkbqw(^^%&*(*&'
+    UPLOAD_FOLDER = 'static/uploads/'
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+    DEBUG = True
+    db_host = env.get('DB_HOST', '172.17.0.2')
+    db_password = env.get('DB_PASSWORD', '1')
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:{}@{}/online_store'.format(db_password, db_host)
+    DEBUG = bool(env.get('DEBUG', False))

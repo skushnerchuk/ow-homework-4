@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin area
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+        <br>
+
+
+        <form class="needs-validation"  method="POST" novalidate>
+            <div class="form-row">
+                <div class="col-auto">
+                    <input type="text" autocomplete="off" class="form-control mb-2" id="new_category" name="new_category" placeholder="New category name" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-danger mb-2">Add category</button>
+                </div>
+            </div>
+        </form>
+
+
+        <form class="needs-validation" method="POST" enctype="multipart/form-data" novalidate>
+
+            <div class="form-group">
+                <input type="name" autocomplete="off" class="form-control" id="name" name="name" placeholder="Product name" required>
+            </div>
+
+            <div class="form-group">
+                <select class="form-control" id="category" name="category" required>
+                    {% for choice in categories %}
+                        <option value="{{ choice.id }}">{{ choice.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" autocomplete="off" id="short_description" name="short_description" rows="3"
+                          required
+                          placeholder="Short description"
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" autocomplete="off" id="description" name="description" rows="6" required
+                    placeholder="Long description"
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="price" autocomplete="off" class="form-control" id="price" name="price" placeholder="$ Price" required>
+            </div>
+            <div class="custom-file">
+                <input id="file" accept=".jpg,.jpeg,.png" name="file" type="file" class="custom-file-input"  required>
+                <label class="custom-file-label" for="file">Choose product image</label>
+            </div>
+            <script>
+                $('#file').on('change', function () {
+                    var fileName = $(this).val();
+                    $(this).next('.custom-file-label').html(fileName);
+                })
+            </script>
+            <br><br>
+            <button type="submit" id="save" class="btn btn-danger">Add product</button>
+        </form>
+    </div>
+    <script src="https://bs-custom-file-input.netlify.com/dist/bs-custom-file-input.min.js"></script>
+    <script>
+        bsCustomFileInput.init()
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}

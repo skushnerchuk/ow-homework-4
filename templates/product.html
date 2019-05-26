@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Product
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="col-lg-3">
+        <h2 class="my-4">Categories</h2>
+        <div class="list-group">
+            {% for item in categories %}
+                <a href="/categories/{{ item.id }}" class="list-group-item">{{ item.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <div class="container">
+            <br>
+            <h3>{{ product.name }}</h3><br>
+            <img src="{{ product.image }}" style="max-height: 150px; max-width: 900px;">
+            <br><br>
+            {{ product.description }}
+            <br><br>
+            <form method="POST" role="form">
+                <h2>$ {{ product.price }}</h2>
+                <input id="id" name="id" type="hidden" value="{{ product.id }}">
+                <button type="submit" class="btn btn-danger">Add to cart</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

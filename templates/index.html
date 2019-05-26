@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Products
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-lg-3">
+        <h2 class="my-4">Categories</h2>
+        <div class="list-group">
+            {% for item in categories %}
+                <a href="/categories/{{ item.id }}" class="list-group-item">{{ item.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <h2 class="my-4">Products</h2>
+        <div class="row">
+
+            {% for item in products %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{ item.image }}" style="max-height: 150px; max-width: 700px;" alt="">
+                        <div class="card-body">
+                            <h7 class="card-title">
+                                <a href="/product/{{ item.id }}">{{ item.name }}</a>
+                            </h7>
+                            <h5>${{ item.price }}</h5>
+                            <p class="card-text">{{ item.short_description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">★ ★ ★ ★ ☆</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}

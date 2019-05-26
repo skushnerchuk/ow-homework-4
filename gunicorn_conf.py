@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import gunicorn
 
-gunicorn.SERVER_SOFTWARE = 'AirTradex v1.0'
+gunicorn.SERVER_SOFTWARE = 'OnlineStore v1.0'

@@ -1,2 +1,2 @@
-CREATE DATABASE IF NOT EXISTS airtradex_protect;
-USE airtradex_protect;
+CREATE DATABASE IF NOT EXISTS online_store;
+USE online_store;

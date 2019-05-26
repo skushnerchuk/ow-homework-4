@@ -1,25 +1,32 @@
-# -*- coding: utf-8 -*-
-
-from application import db
+from app import db
 
 
-class User(db.Model):
+class Category(db.Model):
+    """Категория продуктов"""
 
-    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), unique=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), unique=False, nullable=False)
-    active = db.Column(db.Boolean, default=True, nullable=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Category id: {}, name: {}>'.format(self.id, self.name)
 
 
-class Exchange(db.Model):
+class Product(db.Model):
+    """Продукт"""
 
-    __tablename__ = 'exchanges'
-    __table_args__ = (db.UniqueConstraint('user_id', 'exchange_id', name='exchange_unique'),)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    category = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+    description = db.Column(db.Text)
+    short_description = db.Column(db.Text)
+    image = db.Column(db.String(512))
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
-                        nullable=False)
-    exchange_id = db.Column(db.Integer, nullable=False, unique=False)
-    api_key = db.Column(db.String(255), nullable=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Product id: {}, name: {}>'.format(self.id, self.name)
